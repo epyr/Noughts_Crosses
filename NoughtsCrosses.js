@@ -4,299 +4,263 @@
  * and open the template in the editor.
  */
 
-var player1;
-var player2;
+var player1 = {};
+var player2 = {};
 var playingField;
 var movesLeft;
 var player1Won;
 var player2Won;
 var draw;
+var imgBlank;
+var imgNought;
+var imgCross;
+var currentPlayer;
+var tile;
+var gameWon;
 
 
-function setupGame(){
-
-player1 = prompt("Kółko czy kRzyżyk? K/R");
-if (player1 === "K"){
-    
-    player1 = "O";
-    player2 = "X";
-}
-
-if (player1 === "R"){
-    
-    player1 = "X";
-    player2 = "O";
-}
-
-playingField = new Array(3);
-
-for (var i = 0; i < 3; i++){
-    
-    playingField[i] = new Array(3);
-}
+function setupGame() {
 
 
-for (var i = 0; i < 3; i++){
-    
-    for (var j = 0; j < 3; j++){
-        
-        playingField[i][j] = ".";
-        
-        }
-    }
-    
     movesLeft = 9;
     player1Won = false;
     player2Won = false;
     draw = false;
+
+    imgBlank = new Image();
+    imgBlank.src = "BlankTile.JPG";
+
+    imgCross = new Image();
+    imgCross.src = "Cross.JPG";
+
+    imgNought = new Image();
+    imgNought.src = "Nought.JPG";
+    
+    gameWon = false;
+
+
+
+    var p1mark = prompt("Kółko czy kRzyżyk? K/R");
+
+    if (p1mark === "K") {
+
+        player1.mark = "O";
+        player2.mark = "X";
+
+        player1.imgSrc = imgNought.src;
+        player2.imgSrc = imgCross.src;
+    }
+
+    if (p1mark === "R") {
+
+        player1.mark = "X";
+        player2.mark = "O";
+
+        player1.imgSrc = imgCross.src;
+        player2.imgSrc = imgNought.src;
+    }
+
+    player1.winValue = 3;
+    player2.winValue = 30;
+
+    player1.val = 1;
+    player2.val = 10;
+
+    currentPlayer = player1;
+
+    playingField = new Array(3);
+
+    for (var i = 0; i < 3; i++) {
+
+        playingField[i] = new Array(3);
+    }
+
+
+    for (var i = 0; i < 3; i++) {
+
+        for (var j = 0; j < 3; j++) {
+
+            playingField[i][j] = 0;
+
+        }
+    }
 }
 
-function printField(){
-    
+function printField() {
+
     var printout = "";
-    
-    for( var i = 0; i < 3; i++ ){
-        
-        for (var j = 0; j < 3; j++){
-            
-            printout = printout + playingField[i][j];
+
+    for (var i = 0; i < 3; i++) {
+
+        for (var j = 0; j < 3; j++) {
+
+            printout = printout + playingField[i][j] + "   ";
         }
-        
+
+        document.write("<br>");
         document.write(printout);
         document.write("<br>");
         printout = "";
-        
+
     }
 
 
 }
 
-    function makeMove(player){
-        row = prompt("Podaj wiersz (1 - 3)");
-        row--;
-        column = prompt("Podaj kolumnę (1 - 3)");
-        column--;
-        if( playingField[row][column] !== "."){
+
+
+function handleDraw() {
+    alert("Remis");
+
+    }
+
+
+function handleVictory(player) {
+    gameWon = true;
+
+    alert("Wygrały " + player.mark);
+    
+}
+
+
+
+
+
+function makeMove(row, column, DOMelement) {
+
+    if (playingField[row][column] === 0) {
+
+        playingField[row][column] = currentPlayer.val;
+
+
+
+        DOMelement.src = currentPlayer.imgSrc;
+
+        checkVictory();
+        
+        if(gameWon){
             
-            makeMove(player);
+            return;
+        }
+
+        movesLeft--;
+        if (movesLeft === 0) {
+            handleDraw();
+        }
+
+    }
+
+    if (currentPlayer === player1) {
+        currentPlayer = player2;
+        return;
+    }
+
+    if (currentPlayer === player2) {
+        currentPlayer = player1;
+        return;
+    }
+
+}
+
+function checkVictory() {
+
+    var sum = 0;
+
+    for (var r = 0; r < 3; r++) {
+
+        for (var c = 0; c < 3; c++) {
+
+            sum += playingField[r][c];
+        }
+
+
+
+        if (sum === currentPlayer.winValue) {
+            handleVictory(currentPlayer);
+            return;
+        }
+            
+        else{
+            sum = 0;
+        }
+
+    }
+    
+
+        sum = 0;
+
+        for (var c = 0; c < 3; c++) {
+            for (var r = 0; r < 3; r++) {
+                
+                sum += playingField[r][c];
+                
+            }
+            
+            if (sum === currentPlayer.winValue) {
+            handleVictory(currentPlayer);
+            return;
+                      
+            }
+            
+            else{
+            sum = 0;
+            }
+        
+        
+        
+        }
+        
+        sum = 0;
+        
+        for(var d = 0; d < 3; d++){
+            
+            sum += playingField[d][d];
+        }
+        
+        if (sum === currentPlayer.winValue){
+            
+            handleVictory(currentPlayer);
+           
+            return;
         }
         
         else{
+            sum = 0;
+        }
+        
+        
+        
+        sum = 0;
+        sum = playingField[0][2] + playingField[1][1] + playingField[2][0];
+        
+        if (sum === currentPlayer.winValue){
             
-        playingField[row][column] = player;
-        movesLeft--;
-        document.write("<br>");
-        printField();
-        document.write("<br>");
-        document.write("<br>");
+            handleVictory(currentPlayer);
+            return;
             
         }
         
-    
-    }
+        return;
+ }
 
 
 
-function checkDraw(){
-    
-    return (movesLeft === 0);
+
+
+
+
+function onTileClick(element) {
+
+    var id = element.getAttribute("id");
+    var row = id.substring(3, 4);
+    var col = id.substring(4);
+
+    row = Number(row);
+    col = Number(col);
+    makeMove(row, col, element);
+
+
 }
-
-function checkVictory(player){
-    
-    
-
-    var consecutive_marks = 0;
-    win = false;
-    
-    //check horizontal
-    
-    
-    for (var r = 0; r < 3; r++){
-        
-        for (var c = 0; c < 3; c++){
-            
-        
-            if (playingField[r][c] === player){
-            
-                consecutive_marks++;
-        
-            }
-            
-        }
-      
-      
-     if (consecutive_marks === 3){
-          
-          return true;
-      } 
-          
-    else{ 
-          consecutive_marks = 0;
-      }
-   }
-   
-   
-   
-   // chceck vertical
-   
-   consecutive_marks = 0;
-   
-   for (var c = 0; c < 3; c++){
-       
-       for (var r = 0; r < 3; r++){
-           
-           if (playingField[r][c] === player){
-               
-               consecutive_marks++;
-           }
-       }
-       
-       if(consecutive_marks === 3){
-           
-           return true;
-       }
-       
-       else{
-           
-           consecutive_marks = 0;
-       }
-       
-   }
-   
-   //check diagonal top left to right bottom
-   
-   consecutive_marks = 0;
-   for(var d = 0; d < 3; d++){
-       
-       if (playingField[d][d] === player){
-           
-           consecutive_marks++;
-       }
-       
-       if (consecutive_marks === 3){
-           
-            return true;
-       }
-       
-   }
-   
-   consecutive_marks = 0;
-   //check diagonal top right to bottom left
-   for (var r = 0; r < 3; r++){
-       
-       for (var c = 2; c >= 0; c--){
-           
-           if(playingField[r][c] === player){
-               
-               consecutive_marks++;
-           }
-           
-           if (consecutive_marks === 3){
-               
-               return true;
-           }
-       }
-       
-       consecutive_marks = 0;
-   }
-   return false;
-}
-  
-
-
-
 
 setupGame();
-// Game loop
-
-while(true){
-    
-    makeMove(player1);
-    
-    if(checkVictory(player1)){
-        player1Won = true;
-        break;
-    }
-    
-    if (checkDraw()){
-        draw = true;
-        break;
-    }
-    
-    makeMove(player2);
-    if(checkVictory(player2)){
-        
-        player2Won = true;
-        break;
-    }
-    
-    if (checkDraw()){
-        draw = true;
-        break;
-    }
-    
-    
-}
-
-
-if(player1Won){
-        
-        document.write("Wygrał gracz pierwszy");
- }
- 
- 
- 
-if(player2Won){
-        
-        document.write("Wygrał gracz drugi");
- }
- 
- 
- 
-if(draw){
-        
-        document.write("Remis");
- }
- 
-    
-    
-    
-//
-//playingField = new Array(3);
-//
-//for (var i = 0; i < 3; i++){
-//    
-//    playingField[i] = new Array(3);
-//}
-//
-//
-//for (var i = 0; i < 3; i++){
-//    
-//    for (var j = 0; j < 3; j++){
-//        
-//        playingField[i][j] = ".";
-//        
-//        }
-//    }
-//    
-//  
-//  playingField[1][2] = "O";
-//  playingField[1][1] = "O";
-//  playingField[1][0] = "O";
-//
-//
-// 
-// player1 = "X";
-// player2 = "O";
-// document.write(checkVictory(player2));
- 
-
-
-
-
- 
- 
- 
-
 
