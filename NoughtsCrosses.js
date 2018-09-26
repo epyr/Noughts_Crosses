@@ -21,11 +21,9 @@ function setupGame() {
     imgNought = new Image();
     imgNought.src = "Nought.JPG";
     gameWon = false;
-
     var p1mark = prompt("Kółko czy kRzyżyk? K/R");
 
     if (p1mark === "K") {
-
         player1.mark = "O";
         player2.mark = "X";
         player1.imgSrc = imgNought.src;
@@ -33,21 +31,20 @@ function setupGame() {
     }
 
     if (p1mark === "R") {
-
         player1.mark = "X";
         player2.mark = "O";
         player1.imgSrc = imgCross.src;
         player2.imgSrc = imgNought.src;
     }
-
+    
     player1.winValue = 3;
     player2.winValue = 30;
     player1.val = 1;
     player2.val = 10;
     currentPlayer = player1;
+    
     playingField = new Array(3);
     for (var i = 0; i < 3; i++) {
-
         playingField[i] = new Array(3);
     }
 
@@ -55,7 +52,6 @@ function setupGame() {
         for (var j = 0; j < 3; j++) {
 
             playingField[i][j] = 0;
-
         }
     }
 }
@@ -65,10 +61,8 @@ function printField() {
     var printout = "";
     for (var i = 0; i < 3; i++) {
         for (var j = 0; j < 3; j++) {
-
             printout = printout + playingField[i][j] + "   ";
         }
-
         document.write("<br>");
         document.write(printout);
         document.write("<br>");
@@ -77,15 +71,12 @@ function printField() {
 }
 
 function handleDraw() {
-    
     alert("Remis");
 }
 
 function handleVictory(player) {
-    
     gameWon = true;
     alert("Wygrały " + player.mark);
-    
 }
 
 function makeMove(row, column, DOMelement) {
@@ -93,16 +84,12 @@ function makeMove(row, column, DOMelement) {
     if (playingField[row][column] === 0) {
 
         playingField[row][column] = currentPlayer.val;
-
         DOMelement.src = currentPlayer.imgSrc;
-
         checkVictory();
-        
         if(gameWon){
             
             return;
         }
-
         movesLeft--;
         
         if (movesLeft === 0) {
@@ -125,10 +112,9 @@ function checkVictory() {
     var sum = 0;
     for (var r = 0; r < 3; r++) {
         for (var c = 0; c < 3; c++) {
-
             sum += playingField[r][c];
         }
-
+        
         if (sum === currentPlayer.winValue) {
             handleVictory(currentPlayer);
             return;
@@ -140,10 +126,9 @@ function checkVictory() {
     }
         sum = 0;
 
-        for (var c = 0; c < 3; c++) {
-            for (var r = 0; r < 3; r++) {
-                
-                sum += playingField[r][c];
+    for (var c = 0; c < 3; c++) {
+        for (var r = 0; r < 3; r++) {
+            sum += playingField[r][c];
             }
             
             if (sum === currentPlayer.winValue) {
