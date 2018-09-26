@@ -1,26 +1,15 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 var player1 = {};
 var player2 = {};
 var playingField;
 var movesLeft;
-var player1Won;
-var player2Won;
-var draw;
 var imgBlank;
 var imgNought;
 var imgCross;
 var currentPlayer;
-var tile;
 var gameWon;
 
 
 function setupGame() {
-
 
     movesLeft = 9;
     player1Won = false;
@@ -37,8 +26,6 @@ function setupGame() {
     imgNought.src = "Nought.JPG";
     
     gameWon = false;
-
-
 
     var p1mark = prompt("Kółko czy kRzyżyk? K/R");
 
@@ -107,32 +94,24 @@ function printField() {
 
 }
 
-
-
 function handleDraw() {
-    alert("Remis");
-
-    }
-
-
-function handleVictory(player) {
-    gameWon = true;
-
-    alert("Wygrały " + player.mark);
     
+    alert("Remis");
 }
 
 
-
-
+function handleVictory(player) {
+    
+    gameWon = true;
+    alert("Wygrały " + player.mark);
+    
+}
 
 function makeMove(row, column, DOMelement) {
 
     if (playingField[row][column] === 0) {
 
         playingField[row][column] = currentPlayer.val;
-
-
 
         DOMelement.src = currentPlayer.imgSrc;
 
@@ -144,6 +123,7 @@ function makeMove(row, column, DOMelement) {
         }
 
         movesLeft--;
+        
         if (movesLeft === 0) {
             handleDraw();
         }
@@ -173,8 +153,6 @@ function checkVictory() {
             sum += playingField[r][c];
         }
 
-
-
         if (sum === currentPlayer.winValue) {
             handleVictory(currentPlayer);
             return;
@@ -185,8 +163,7 @@ function checkVictory() {
         }
 
     }
-    
-
+  
         sum = 0;
 
         for (var c = 0; c < 3; c++) {
@@ -197,17 +174,16 @@ function checkVictory() {
             }
             
             if (sum === currentPlayer.winValue) {
+            
             handleVictory(currentPlayer);
             return;
                       
             }
             
             else{
+            
             sum = 0;
-            }
-        
-        
-        
+            }       
         }
         
         sum = 0;
@@ -225,10 +201,9 @@ function checkVictory() {
         }
         
         else{
+            
             sum = 0;
-        }
-        
-        
+        }  
         
         sum = 0;
         sum = playingField[0][2] + playingField[1][1] + playingField[2][0];
@@ -237,17 +212,10 @@ function checkVictory() {
             
             handleVictory(currentPlayer);
             return;
-            
         }
         
         return;
  }
-
-
-
-
-
-
 
 function onTileClick(element) {
 
@@ -258,8 +226,6 @@ function onTileClick(element) {
     row = Number(row);
     col = Number(col);
     makeMove(row, col, element);
-
-
 }
 
 setupGame();
