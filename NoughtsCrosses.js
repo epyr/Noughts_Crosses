@@ -144,7 +144,7 @@ function checkVictory() {
         
         sum = 0;
         
-        for(var d = 0; d < 3; d++){
+    for(var d = 0; d < 3; d++){
             
             sum += playingField[d][d];
         }
@@ -158,8 +158,9 @@ function checkVictory() {
             
             sum = 0;
         }  
+        
         sum = 0;
-        sum = playingField[0][2] + playingField[1][1] + playingField[2][0];
+    sum = playingField[0][2] + playingField[1][1] + playingField[2][0];
         
         if (sum === currentPlayer.winValue){
             
