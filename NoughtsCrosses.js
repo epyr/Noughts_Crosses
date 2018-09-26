@@ -8,7 +8,6 @@ var imgCross;
 var currentPlayer;
 var gameWon;
 
-
 function setupGame() {
 
     movesLeft = 9;
@@ -29,7 +28,6 @@ function setupGame() {
 
         player1.mark = "O";
         player2.mark = "X";
-
         player1.imgSrc = imgNought.src;
         player2.imgSrc = imgCross.src;
     }
@@ -54,7 +52,6 @@ function setupGame() {
     }
 
     for (var i = 0; i < 3; i++) {
-
         for (var j = 0; j < 3; j++) {
 
             playingField[i][j] = 0;
@@ -67,17 +64,15 @@ function printField() {
 
     var printout = "";
     for (var i = 0; i < 3; i++) {
-
         for (var j = 0; j < 3; j++) {
 
             printout = printout + playingField[i][j] + "   ";
         }
-        
+
         document.write("<br>");
         document.write(printout);
         document.write("<br>");
         printout = "";
-
     }
 }
 
@@ -119,19 +114,16 @@ function makeMove(row, column, DOMelement) {
         currentPlayer = player2;
         return;
     }
-
     if (currentPlayer === player2) {
         currentPlayer = player1;
         return;
     }
-
 }
 
 function checkVictory() {
 
     var sum = 0;
     for (var r = 0; r < 3; r++) {
-
         for (var c = 0; c < 3; c++) {
 
             sum += playingField[r][c];
@@ -146,14 +138,12 @@ function checkVictory() {
             sum = 0;
         }
     }
-  
         sum = 0;
 
         for (var c = 0; c < 3; c++) {
             for (var r = 0; r < 3; r++) {
                 
                 sum += playingField[r][c];
-                
             }
             
             if (sum === currentPlayer.winValue) {
